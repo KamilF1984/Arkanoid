@@ -1,6 +1,4 @@
 #include "Ball.hpp"
-//#include "Globals.hpp"
-//#include "stdafx.h"
 
 
 Ball::Ball(float x, float y) {
@@ -19,6 +17,13 @@ float Circle::bottom() { return shape.getPosition().y + shape.getRadius(); }
 float Circle::x() { return shape.getPosition().x; }
 float Circle::y() { return shape.getPosition().y; }
 
+void Ball::resetPosition() {
+	sf::Time::Zero;
+	shape.setPosition(400, 442);
+	stuck = true;
+}
+
+
 void Ball::solveBoundCollisions()
 {
 	if (top() < 0)
@@ -27,11 +32,12 @@ void Ball::solveBoundCollisions()
 	if (left() < 0)
 		velocity.x = ballVelocity;
 	//bottom
-	if (bottom() > videoHeight)
-		velocity.y = -ballVelocity;
+	//if (bottom() > videoHeight)
+	//	velocity.y = -ballVelocity;
 	//right
 	if (right() > videoWidth)
 		velocity.x = -ballVelocity;
+
 }
 
 
@@ -47,6 +53,7 @@ void Ball::update()
 
 	}
 
+	
 	if (stuck == true) {
 
 		if (sf:: Keyboard::isKeyPressed(sf:: Keyboard::Left) && left() > 0 + rectangleWidth / 2 - ballRadius)
@@ -68,14 +75,24 @@ void Ball::update()
 		}
 
 	}
+
+	//std::cout << bottom();
+	
 }
+
+//float Ball:: getBallPosition(){return shape.getLocalBounds()}
 
 /*void Ball::draw(sf::RenderWindow &window)
 {
 window.draw(circle);
 }*/
 
+/*void Ball::restart()
+{
 
+	Ball ball{ 400, 450 };
+
+}*/
 Ball::~Ball()
 {
 }

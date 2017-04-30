@@ -146,8 +146,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.hpp" />
+    <ClInclude Include="GameLevels.hpp" />
     <ClInclude Include="GameState.hpp" />
-    <ClInclude Include="Globals.hpp" />
+    <ClInclude Include="Menu.hpp" />
     <ClInclude Include="Paddle.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -156,7 +157,9 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="BreakOut.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="GameLevels.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

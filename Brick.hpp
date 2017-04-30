@@ -1,17 +1,13 @@
-//#pragma once
-#ifndef Brick_hpp
-#define Brick_hpp
+#pragma once
 #include "Paddle.hpp"
 
 class Brick : public Rectangle {
 
 public:
 	bool destroyed = false;
-	sf::Color defColor{ sf::Color::Blue };
-
-	Brick(float x, float y);
+	Brick(sf:: Vector2f Position,sf:: Vector2f Size, sf::Color defColor);
 	~Brick();
-
-
 };
-#endif
+
+
+

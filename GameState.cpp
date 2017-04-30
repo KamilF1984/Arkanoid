@@ -1,4 +1,10 @@
 #include "GameState.hpp"
+#include "Menu.hpp"
+
+
+
+//#include "GameLevels.hpp"
+
 //#include "Globals.hpp"
 
 float clamp(float value, float min, float max) {
@@ -160,40 +166,70 @@ void DoCollisions(Ball &ball, Brick &brick) {
 }
 
 
-/*void GameState::loadEverything()
+void GameState::gameOver()
 {
-	soundEffect.loadAudio2();
-}*/
-
-
-void GameState::restart()
-{
-	//soundEffect.audio[4]->play();
-//	state = State::PAUSED;
-
-	bricks.clear();
 	
-
-	
-		for (iX = 0; iX < countBlocksX; ++iX) {
-			for (iY = 0; iY < countBlocksY; ++iY)
-				bricks.push_back({ (iX + 1) * (blockWidth + 3) + 22, (iY + 2) * (blockHeight + 3) });//emplace_back ?
-
-	}
-
-	Ball   ball( 400,450 );
-	Paddle paddle( 400,470 );
-
+	sf::Text text;
+	sf::Font font;
+	font.loadFromFile("timesnewarial.ttf");
+	text.setFont(font);
+	text.setString("GAME OVER !!!");
+	text.setCharacterSize(50);
+	text.setPosition(250, 300);
+	text.setFillColor(sf::Color::Red);
+	window.draw(text);
 }
 
-
-void::GameState::run()
+void GameState::printText()
 {
 
-	//Ball   ball(400, 450);
-	//Paddle paddle(400, 470);
+	sf::Text text, text2, text3,text4;
+	sf::Font font;
+	font.loadFromFile("timesnewarial.ttf");
+	text.setFont(font);
+	text.setString("Lives: ");
+	text.setCharacterSize(24);
+	text.setPosition(100, 10);
+	text.setFillColor(sf::Color::Red);
+	text2.setFont(font);
+	text2.setString("Score: ");
+	text2.setCharacterSize(24);
+	text2.setPosition(600, 10);
+	text2.setFillColor(sf::Color::Red);
+	std::stringstream ss;
+	ss << lives;
+	text3.setString(ss.str().c_str());//You then use '.str()' to get a std::string, and then .c_str() to get a char* from the string.
+	text3.setFont(font);
+	text3.setCharacterSize(24);
+	text3.setPosition(165, 10);
+	text3.setFillColor(sf::Color::Red);
+	window.draw(text);
+	window.draw(text2);
+	//window.draw(text3);
+	//std::cout << bottom();
+//	std::cout << shape.getRadius();
+	//std::cout << lives << std::endl;
+	window.draw(text3);
+}
+
+void GameState::lost() {
+
+	if (ball.bottom() > 750)
+	{
+		--lives;
+		ball.resetPosition();
+		paddle.resetPosition();
+	}
+
+	if (lives == 0)
+	{
+		gameOver(); 
+	}
+}
+void::GameState::run()
+{
+	GameLevel::Load("test.txt");
 	
-	//window.setMouseCursorVisible(false);
 	while (window.isOpen())
 	{
 		window.clear(sf::Color::Black);
@@ -202,15 +238,16 @@ void::GameState::run()
 		{
 			switch (event.type)
 			{
-			case sf::Event::Closed:
+				case sf::Event::Closed:
 				window.close();
 				break;
 			}
 		}
-
-
+		printText();
+		lost();
 		
-
+		
+		
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
 				{
 
@@ -230,13 +267,14 @@ void::GameState::run()
 
 
 
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
-					restart();
+			/*	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
+					restart();*/
 
 				// if not paused, then the game must be running, so we update.
 				if (state != State::PAUSED)
 				//if (state == State::INPROGRESS)
 				{
+					
 
 			paddle.update();
 			ball.update();
@@ -244,6 +282,7 @@ void::GameState::run()
 			//for (auto& brick : bricks) window.draw(brick.shape);//range loop //C++ 11 range-based for: for (auto& elem : container)/ auto oznacza,ze typ jest sprawdzany na podstawi elementów													//BallPaddleCollision(&ball, &paddle);
 				CollisionPaddle(ball, paddle);
 			for (auto& brick : bricks) DoCollisions(ball, brick);
+			
 			bricks.erase(remove_if(begin(bricks), end(bricks),//The erase–remove idiom is a common C++ technique to eliminate elements that fulfill a certain criterion//poczatek,koniec ,co usuwac
 				[](const Brick  &p_brick)// operator lambda, const zaklada ze nie zmieni sie stan obiektu brick, np.ze nagle nie zmieni sie,ze jednak nie jest zniszczony.
 			{
@@ -256,7 +295,7 @@ void::GameState::run()
 
 			window.draw(ball.shape);
 			window.draw(paddle.shape);
-
+			//menu.draw(window);
 			for (auto& brick : bricks) window.draw(brick.shape);
 
 			window.display();
@@ -267,8 +306,59 @@ void::GameState::run()
 			paddle.czas = paddle.zegar.getElapsedTime();
 			paddle.zegar.restart().asMilliseconds();
 			
+}
 		
 	}
-}
 
+void GameState::loadMenu()
+{
+	Menu menu(window.getSize().x, window.getSize().y);
+	//	menu.draw(window);
+	//	window.display();
+	//sf::Event event;
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Up:
+					menu.MoveUp();
+					break;
+
+				case sf::Keyboard::Down:
+					menu.MoveDown();
+					break;
+
+				case sf::Keyboard::Return:
+					switch (menu.GetPressedItem())
+					{
+					case 0:
+						GameState::run();
+						break;
+
+					case 2:
+						window.close();
+						break;
+
+					}
+
+					break;
+				}
+				break;
+			case sf::Event::Closed:
+				window.close();
+				break;
+			}
+
+		}
+	//	window.clear(sf::Color::Black);
+		menu.draw(window);
+		window.display();
+	}
+}
 

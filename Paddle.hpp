@@ -1,6 +1,4 @@
-//#pragma once
-#ifndef Paddle_hpp
-#define Paddle_hpp
+#pragma once
 #include "Ball.hpp"
 
 
@@ -33,9 +31,15 @@ public:
 	const float rectangleWidth = 60;
 	const float rectangleHeight = 20;
 
+	sf::Texture texture;
+	sf::Sprite sprite;
+	sf:: Texture loadTexture();
+	void loadSprite();
+	
 	Paddle(float x, float y);
 	~Paddle();
 	void update();
+	void resetPosition();
 	sf::Clock zegar;
 	sf::Time czas;
 private:
@@ -46,4 +50,3 @@ private:
 	const float rectangleVelocity = 0.5;
 
 };
-#endif

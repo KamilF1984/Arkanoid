@@ -1,11 +1,12 @@
 #include "Brick.hpp"
 
 
-Brick::Brick(float x, float y) {
-	shape.setPosition(x, y);
+Brick::Brick(sf::Vector2f Position, sf::Vector2f Size, sf::Color defColor) {
+	shape.setPosition(Position.x, Position.y);
 	shape.setFillColor(defColor);
-	shape.setSize({ 60, 20 });
-	shape.setOrigin(30, 10);
+	shape.setSize(Size);
+	shape.setOrigin(Size.x/2, Size.y/2);
+	
 }
 
 Brick::~Brick()

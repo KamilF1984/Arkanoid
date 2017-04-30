@@ -11,11 +11,11 @@ void pause() { std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'
 int main()
 {
 
-
+	
 	GameState game;
-	//game.loadEverything();
-	game.restart();
-	game.run();
+	game.loadMenu();
+//	game.restart();
+//	game.run();
 
 	return 0;
 
