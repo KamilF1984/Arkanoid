@@ -10,6 +10,7 @@
 using namespace std;
 using namespace sf;
 
+
 const float videoHeight = 600;
 const float videoWidth = 800;
 const float ballVelocity = 2.0;
@@ -20,7 +21,7 @@ const float rectangleVelocity = 2;
 int countBlocksX = 11, countBlocksY = 4;
 float blockWidth = 60.f, blockHeight = 20.f;
 int iX, iY;
-
+int z;
 
 class Ball {
 
